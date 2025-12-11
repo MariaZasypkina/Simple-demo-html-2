@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MonoFrame Studio — Creative Code Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Minimal serif + mono -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f3ef;
+            --text: #111111;
+            --accent: #111111;
+            --muted: #b3aea4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Layout */
+        .page-grid {
+            display: grid;
+            grid-template-columns: 260px minmax(0, 1fr);
+            min-height: 100vh;
+            border-top: 8px solid var(--text);
+        }
+
+        /* Left column: “sidebar” */
+        .sidebar {
+            border-right: 1px solid #ddd;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand-block {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+        }
+
+        .brand-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            line-height: 1.1;
+            margin: 0.75rem 0 0.5rem;
+        }
+
+        .brand-tagline {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+        }
+
+        .sidebar-nav {
+            margin-top: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .sidebar-nav a {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid transparent;
+        }
+
+        .sidebar-nav a:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        .sidebar-meta {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+        }
+
+        /* Right column: main content */
+        main {
+            padding: 2.5rem 3rem 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        /* Hero block */
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(260px, 1.3fr);
+            gap: 2.5rem;
+            align-items: start;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 2.5rem;
+        }
+
+        .hero-headline {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.2rem, 3.5vw, 3.1rem);
+            line-height: 1.05;
+            text-transform: uppercase;
+        }
+
+        .hero-subline {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+        }
+
+        .hero-paragraph {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            max-width: 36rem;
+        }
+
+        .hero-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+            margin-bottom: 0.6rem;
+        }
+
+        .hero-aside {
+            border-left: 3px solid var(--text);
+            padding-left: 1.5rem;
+        }
+
+        .hero-list {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+
+        .hero-list li + li {
+            margin-top: 0.75rem;
+        }
+
+        .hero-cta {
+            margin-top: 1.8rem;
+        }
+
+        .hero-cta a {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            padding: 0.65rem 1.3rem;
+            border: 1px solid var(--text);
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-cta a span {
+            font-size: 0.9rem;
+        }
+
+        .hero-cta a:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        /* Section titles */
+        .section-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Portfolio strip */
+        .portfolio-strip {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 2.5rem;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .project-card {
+            border: 1px solid #222;
+            background: #faf8f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 260px;
+        }
+
+        .project-media {
+            aspect-ratio: 4 / 3;
+            border-bottom: 1px solid #222;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        .project-body {
+            padding: 0.9rem 0.9rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .project-meta {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+        }
+
+        .project-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .project-desc {
+            font-size: 0.8rem;
+        }
+
+        .project-card:hover .project-media {
+            filter: grayscale(0%);
+            transform: scale(1.02);
+        }
+
+        /* Contact block */
+        .contact-strip {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr);
+            gap: 2.5rem;
+        }
+
+        .contact-text {
+            font-size: 0.95rem;
+            max-width: 30rem;
+        }
+
+        .contact-list {
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .contact-list span {
+            display: block;
+        }
+
+        .contact-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--muted);
+        }
+
+        .contact-link {
+            border-bottom: 1px solid transparent;
+            display: inline-block;
+        }
+
+        .contact-link:hover {
+            border-bottom-color: var(--text);
+        }
+
+        /* Responsive */
+        @media (max-width: 960px) {
+            .page-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+                flex-direction: row;
+                align-items: flex-end;
+                gap: 1.5rem;
+            }
+
+            .sidebar-nav {
+                flex-direction: row;
+                gap: 1rem;
+                margin-top: 0;
+            }
+
+            .sidebar-meta {
+                display: none;
+            }
+
+            main {
+                padding: 1.8rem 1.5rem 2.5rem;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .hero-aside {
+                border-left: none;
+                border-top: 3px solid var(--text);
+                padding-left: 0;
+                padding-top: 1.2rem;
+            }
+
+            .contact-strip {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .sidebar-nav {
+                flex-wrap: wrap;
+            }
+
+            .project-card {
+                min-height: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page-grid">
+    <!-- LEFT COLUMN -->
+    <aside class="sidebar">
+        <div>
+            <div class="brand-block">
+                Creative Code Studio
+            </div>
+            <h1 class="brand-title">MonoFrame</h1>
+            <div class="brand-tagline">Generative visuals & web systems</div>
+
+            <nav class="sidebar-nav">
+                <a href="#intro">Intro</a>
+                <a href="#portfolio">Selected work</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+
+        <div class="sidebar-meta">
+            Independent web practice<br>
+            Based in Colorado · Working worldwide
+        </div>
+    </aside>
+
+    <!-- RIGHT COLUMN -->
+    <main>
+        <!-- HERO / INTRO -->
+        <section id="intro" class="hero">
+            <div>
+                <div class="hero-headline">
+                    Interfaces for<br>
+                    generative stories<br>
+                    and digital galleries.
+                </div>
+                <div class="hero-subline">
+                    One‑page experiences · Code‑driven layouts · Long‑living systems
+                </div>
+                <p class="hero-paragraph">
+                    MonoFrame is a small studio focused on reductionist, type‑first interfaces.
+                    The work combines generative visuals, precise grids and brutal honesty in layout,
+                    tailored for artists, galleries and experimental brands.
+                </p>
+                <div class="hero-cta">
+                    <a href="#portfolio">
+                        <span>View selected pieces</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <aside class="hero-aside">
+                <div class="hero-label">Snapshot</div>
+                <ul class="hero-list">
+                    <li>Focus: generative art, creative coding, editorial‑style web layouts.</li>
+                    <li>Formats: single‑page sites, collections, live visuals.</li>
+                    <li>Stack: HTML, CSS, vanilla JS, GLSL sketches, WebGL experiments.</li>
+                </ul>
+            </aside>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="portfolio" class="portfolio-strip">
+            <div class="section-label">01 · Selected work</div>
+            <h2 class="section-title">Compact generative studies</h2>
+
+            <div class="portfolio-grid">
+                <article class="project-card">
+                    <div class="project-media"
+                         style="background-image:url('https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&w=900&fit=crop');"></div>
+                    <div class="project-body">
+                        <div class="project-meta">Study 01 · Web sketch</div>
+                        <div class="project-title">Linear Noise Fields</div>
+                        <p class="project-desc">
+                            Striped noise patterns that react to scroll position and cursor direction.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-media"
+                         style="background-image:url('https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&w=900&fit=crop');"></div>
+                    <div class="project-body">
+                        <div class="project-meta">Study 02 · Gallery wall</div>
+                        <div class="project-title">Grid Echoes</div>
+                        <p class="project-desc">
+                            Modular grid of looping code‑generated compositions for digital walls.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-media"
+                         style="background-image:url('https://images.unsplash.com/photo-1537849244241-344c7e1b6b39?auto=format&w=900&fit=crop');"></div>
+                    <div class="project-body">
+                        <div class="project-meta">Study 03 · Live piece</div>
+                        <div class="project-title">Signal Scanner</div>
+                        <p class="project-desc">
+                            Monochrome scanner lines that translate live audio into visual pulses.
+                        </p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-media"
+                         style="background-image:url('https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?auto=format&w=900&fit=crop');"></div>
+                    <div class="project-body">
+                        <div class="project-meta">Study 04 · Identity</div>
+                        <div class="project-title">Static Noise Logotype</div>
+                        <p class="project-desc">
+                            Identity system built from controlled noise blocks and vertical rhythm.
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="contact-strip">
+            <div>
+                <div class="section-label">02 · Contact</div>
+                <h2 class="section-title">New commissions & collaborations</h2>
+                <p class="contact-text">
+                    Open to collaborations with galleries, studios and independent artists interested
+                    in slow, system‑driven web pieces. For commissions, send a short note with links
+                    to your work and a rough idea of format and timeline.
+                </p>
+            </div>
+
+            <div class="contact-list">
+                <div>
+                    <span class="contact-label">Email</span>
+                    <a class="contact-link" href="mailto:hello@monoframe.studio">hello@monoframe.studio</a>
+                </div>
+                <div>
+                    <span class="contact-label">Social</span>
+                    <a class="contact-link" href="#">@monoframe_studio</a>
+                </div>
+                <div>
+                    <span class="contact-label">Location</span>
+                    <span>Colorado · Remote / worldwide</span>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>
